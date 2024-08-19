@@ -1,0 +1,39 @@
+name: RDP Deployment Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js (or your preferred environment)
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14' # specify the version you need
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build application
+        run: npm run build
+
+      - name: Deploy application
+        run: |
+          # Example deployment command
+          # This is where you might use PowerShell to deploy the app to the server
+          Invoke-WebRequest -Uri "http://yourserver/deploy" -Method Post -Body @{ 
+            "version" = "$(git rev-parse --short HEAD)"
+          }
+
+      - name: Run RDP-related tasks (Optional)
+        run: |
+          # Example RDP-related task
+          # This is a placeholder; replace with actual RDP commands or scripts if needed
+          Write-Host "Running RDP-related tasks..."
